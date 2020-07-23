@@ -40,3 +40,8 @@ class Follow(models.Model):
                              related_name="follower")
     following = models.ForeignKey(User, on_delete=models.CASCADE,
                                   related_name="following")
+
+    def save(self, *args, **kwargs):
+        if not Follow.objects.filter(user=self.user,
+                                     following=self.following).exists():
+            return super(Follow, self).save(*args, **kwargs)

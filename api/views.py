@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, mixins, viewsets
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from .models import Follow, Group, Post
 from .permissions import IsOwnerOrReadOnly
@@ -38,7 +39,7 @@ class FollowViewSet(mixins.CreateModelMixin,
 
     queryset = Follow.objects.all()
     serializer_class = FollowSerializer
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [filters.SearchFilter]
     search_fields = ['=user__username', '=following__username']
 
@@ -52,4 +53,4 @@ class GroupViewSet(mixins.CreateModelMixin,
 
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
